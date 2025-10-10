@@ -6,7 +6,7 @@ from src.client import Cliente
 
 class TestChatIntegracion:
 
-    def test_multiples_clientes_reciben_mensaje(self):
+    def test_multiples_clientes_reciben_mensajes(self):
         servidor_thread = threading.Thread(target=iniciar_servidor, daemon=True)
         servidor_thread.start()
         time.sleep(0.5)
@@ -35,9 +35,12 @@ class TestChatIntegracion:
         cliente1.conectar()
         cliente2.conectar()
 
-        cliente1.enviar_mensaje("Mensaje antes de desconexion")
+        cliente1.enviar_mensaje("Mensaje antes de desconexión")
         cliente1.desconectar()
         time.sleep(0.5)
 
-        assert "Mensaje despues" in (cliente2.ultimo_mensaje or "")
+        cliente2.enviar_mensaje("Mensaje después de desconexión")
+        time.sleep(0.5)
+
+        assert "Mensaje después" in (cliente2.ultimo_mensaje or "")
         cliente2.desconectar()

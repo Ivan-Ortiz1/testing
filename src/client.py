@@ -20,7 +20,6 @@ class Cliente:
         try:
             self.socket.send(mensaje.encode("utf-8"))
             # Registrar localmente el último mensaje enviado para que el cliente
-            # refleje inmediatamente su propio mensaje (útil en tests/eco).
             self.ultimo_mensaje = mensaje
         except Exception as e:
             print("Error al enviar mensaje:", e)

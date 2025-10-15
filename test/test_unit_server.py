@@ -1,5 +1,6 @@
 import pytest
 from src.server import validar_mensaje, eliminar_cliente
+from unittest.mock import Mock
 
 
 class TestServidor:
@@ -16,11 +17,8 @@ class TestServidor:
 
     def test_eliminar_cliente_no_lanza_errores(self):
         # Cliente falso (sin conexión real)
-        class MockCliente:
-            def close(self):
-                pass
-
-        conn = MockCliente()
+        conn = Mock()
+        conn.close = Mock()
         try:
             eliminar_cliente(conn)
         except Exception as e:

@@ -9,11 +9,11 @@ class Cliente:
         self.puerto = puerto
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.ultimo_mensaje = None
-        self.ejecutando = False
+        self.actividad = False
 
     def conectar(self):
         self.socket.connect((self.host, self.puerto))
-        self.ejecutando = True
+        self.actividad = True
         threading.Thread(target=self.recibir_mensajes, daemon=True).start()
 
     def enviar_mensaje(self, mensaje):
@@ -25,18 +25,18 @@ class Cliente:
             print("Error al enviar mensaje:", e)
 
     def recibir_mensajes(self):
-        while self.ejecutando:
+        while self.actividad:
             try:
                 msg = self.socket.recv(1024).decode("utf-8")
                 if msg:
                     self.ultimo_mensaje = msg
                     print(msg)
             except:
-                self.ejecutando = False
+                self.actividad = False
                 break
 
     def desconectar(self):
-        self.ejecutando = False
+        self.actividad = False
         try:
             self.socket.close()
         except:
